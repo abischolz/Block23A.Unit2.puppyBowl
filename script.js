@@ -16,6 +16,8 @@ const fetchAllPlayers = async () => {
     console.log(data);
     console.log(data.data);
     console.log(data.data.players);
+    // here - you want to return the array of players or an empty array if no players are found 
+    // this way, when you call renderAllPlayers, playerList.length will not throw an error 
     if (data.data.players) {
       return data.data.players;
     }
@@ -53,6 +55,8 @@ const fetchSinglePlayer = async (playerId) => {
 const addNewPlayer = async (playerObj) => {
   try {
     // TODO
+    // this returns a 404 error because it's calling https://fsa-puppy-bowl.herokuapp.com/api/2308-ftb-et-web-ft/players/players 
+    // remove the extra players from the url and this works :) 
     const response = await fetch(`${API_URL}/players`, {
       method: "POST",
       headers: {
@@ -76,7 +80,8 @@ const addNewPlayer = async (playerObj) => {
  */
 const removePlayer = async (playerId) => {
   try {
-    const response = await fetch(`${API_URL}/players/${playerId}`, {
+    // same issue here as with addNewPlayer - remove the extra players from the url and this works :)
+    const response = await fetch(`${API_URL}/${playerId}`, {
       method: "DELETE",
     });
 
@@ -87,6 +92,7 @@ const removePlayer = async (playerId) => {
         `Failed to remove player #${playerId}. Response: ${response.status}`
       );
     }
+    // remember to re-render the list of players after removing one by calling the init function
   } catch (err) {
     console.error(
       `Whoops, trouble removing player #${playerId} from the roster!`,
